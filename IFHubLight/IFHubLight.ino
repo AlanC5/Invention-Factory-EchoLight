@@ -1,54 +1,58 @@
-const int RLed = 4;//red led
-const int GLed = 5;//Green led
-const int Tsensor = A1;//temperature sensor
-const int Lsensor = A0;//photoresistor sensor
-const int switchPin = 3;//switch
-const float baseT = 21.0;
-const int baseL = 700;
+const int RLed = 8;  //Red led
+const int GLed = 9;  //Green led
+const int Temp_sensor = A1;  //Temperature sensor
+const int Photo_sensor = A0;  //Photoresistor sensor
+const int Switch_pin = 12;  //Switch
 
-int count = 10;
-int switchstate = 0;
-int RState = 0;
-int GState = 0;
-int Lsensorvalue = 0;
-int ledPin = 0;
-float temp = 0;
-float volts = 0;
-//long previousMillis = 0;
-
-//long interval = 1000;
+//Base Values
+  const float base_Temp = 21.0;
+  const int base_Photo = 700;
+  
+  int count = 10;  //Count for delays
+  int switchstate = 0;  //Button state
+  int Photo_value = 0;
+  int Temp_value = 0;
+  int ledPin = 0;  //Contains the active pin
+  float volts = 0;  //Sensors read as volts
+  float temp = 0;   //Convert volts to temperature
 
 void setup() {
   pinMode(RLed, OUTPUT);
   pinMode(GLed, OUTPUT);
-  pinMode(switchPin, INPUT);
+  pinMode(Switch_pin, INPUT);
   Serial.begin(9600);
 }
 
 void loop () {
-  readValues();
+  read_Values();
   if (count >= 10) {
-    if(Lsensorvalue < baseL) {
+    // Cover photoresistor to turn on Green LED
+    if(Photo_value < base_Photo) {
       ledPin = GLed;
     }
     else {
       digitalWrite(GLed, 0); 
     }
-    if(temp > baseT) {
+    
+    // Increase temperature sensor to turn on Red LED
+    if(temp > base_Temp) {
       ledPin = RLed;
     }
     else {
       digitalWrite(RLed, 0); 
     }
+    
+    // Activates blinking lights
     if (ledPin != 0) {
       int blinker = 0;
+      //blinks 30 times within 15 seconds --- Mostly used for casual events, emergency event may last indefintely, additional BOOL to confirm if casual or emergency
       while(blinker <= 30) {
-        readValues();
+        read_Values();
         digitalWrite(ledPin, HIGH);
         delay(250);
         digitalWrite(ledPin, LOW);
         delay(250);
-        switchstate = digitalRead(switchPin);
+        switchstate = digitalRead(Switch_pin);
         if (switchstate == 0) {
           blinker = 30;
         }
@@ -56,12 +60,16 @@ void loop () {
       }
       ledPin = 0;
     }
+    
+    //If button is pressed, turn off lights/sound and restart count to allow for delay
     if(switchstate == 0) {
       digitalWrite(ledPin, 0);
       count = 0;
      }
     delay(500);
   }
+  
+  //This delay allows for 5 second pause in notification system, but it wil continue to read values
   if (count < 10) {
     count++;
     delay(500); 
@@ -75,7 +83,7 @@ void blink(int ledPin) {
        delay(250);
        digitalWrite(ledPin, LOW);
        delay(250);
-       switchstate = digitalRead(switchPin);
+       switchstate = digitalRead(Switch_pin);
        if (switchstate == 0) {
          blinker = 30;
          ledPin = 0;
@@ -84,21 +92,22 @@ void blink(int ledPin) {
   }
 }
 
-void readValues () {
-  //unsigned long currentMillis = millis()
-  Lsensorvalue = analogRead(Lsensor);
-  int sensorValue = analogRead(Tsensor);
-  switchstate = digitalRead(switchPin);
+void read_Values () {
+  delay(1000);
+  Photo_value = analogRead(Photo_sensor);
+  Temp_value = analogRead(Temp_sensor);
+  switchstate = digitalRead(Switch_pin);
   //Serial.print("Sensor Value: ");
-  //Serial.print(sensorValue);
-  volts = (sensorValue/1024.0) * 5.0;
+  //Serial.print(Temp_value);
+  volts = (Temp_value/1024.0) * 5.0;
   //Serial.print(" , Volts: ");
   //Serial.print(volts);
   temp = (volts - 0.5) * 100;
-  Serial.print(", Degrees C: ");
+  Serial.print("Degrees C: ");
   Serial.print(temp);
   Serial.println();
-  Serial.print("Raw Sensor Value \t:");
-  Serial.print(Lsensorvalue);
+  Serial.print("Photoresistor Value: ");
+  Serial.print(Photo_value);
+  Serial.println();
   Serial.println();
 }
