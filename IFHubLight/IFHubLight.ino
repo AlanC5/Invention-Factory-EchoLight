@@ -3,6 +3,7 @@ const int GLed = 9;  //Green led
 const int Temp_sensor = A1;  //Temperature sensor
 const int Photo_sensor = A0;  //Photoresistor sensor
 const int Switch_pin = 12;  //Switch
+const int Piezo_pin = 7;
 
 //Base Values
   const float base_Temp = 20.0;
@@ -119,4 +120,9 @@ void read_Values () {
   Serial.print(Photo_value);
   Serial.println();
   Serial.println();
+}
+
+void sound () {
+  tone(Piezo_pin, 250, 1000);//tone(pin, pitch, duration(ms))
+  delay(1000);
 }

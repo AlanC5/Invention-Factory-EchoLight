@@ -27,7 +27,11 @@ void loop() {
   
   int pitch = map(sensorValue, sensorLow, sensorHigh, 50, 4000);
   
-  tone(7, pitch, 20);
+  tone(7, 250, 500);
   
-  delay(10);
+  delay(1000);
+}
+
+void sound() {
+  tone(6, 250, 500);
 }
