@@ -5,7 +5,7 @@ const int Photo_sensor = A0;  //Photoresistor sensor
 const int Switch_pin = 12;  //Switch
 
 //Base Values
-  const float base_Temp = 21.0;
+  const float base_Temp = 20.0;
   const int base_Photo = 700;
   
   int count = 10;  //Count for delays
@@ -44,21 +44,7 @@ void loop () {
     
     // Activates blinking lights
     if (ledPin != 0) {
-      int blinker = 0;
-      //blinks 30 times within 15 seconds --- Mostly used for casual events, emergency event may last indefintely, additional BOOL to confirm if casual or emergency
-      while(blinker <= 30) {
-        read_Values();
-        digitalWrite(ledPin, HIGH);
-        delay(250);
-        digitalWrite(ledPin, LOW);
-        delay(250);
-        switchstate = digitalRead(Switch_pin);
-        if (switchstate == 0) {
-          blinker = 30;
-        }
-        blinker++;
-      }
-      ledPin = 0;
+      blink();
     }
     
     //If button is pressed, turn off lights/sound and restart count to allow for delay
@@ -76,24 +62,47 @@ void loop () {
   }
 }
 
-void blink(int ledPin) {
-  int blinker = 0;
+//Configure to override casual with emergencies
+void blink() {
+  //casual
+  //blinks 30 times within 15 seconds --- Mostly used for casual events, emergency event may last indefintely, additional BOOL to confirm if casual or emergency
+  if (ledPin == GLed) {
+    int blinker = 0;
     while(blinker <= 30) {
-       digitalWrite(ledPin, HIGH);
-       delay(250);
-       digitalWrite(ledPin, LOW);
-       delay(250);
-       switchstate = digitalRead(Switch_pin);
-       if (switchstate == 0) {
-         blinker = 30;
-         ledPin = 0;
-       }
-    blinker++;
+      read_Values();
+      if (temp > base_Temp) {
+        ledPin = RLed;
+        blinker = 30;
+      }
+      digitalWrite(ledPin, HIGH);
+      delay(250);
+      digitalWrite(ledPin, LOW);
+      delay(250);
+      switchstate = digitalRead(Switch_pin);
+      if (switchstate == 0) {
+        blinker = 30;
+      }
+      blinker++;
+    }
   }
+  //emergency
+  if (ledPin == RLed) {
+    bool emergency_On = true;
+    while (emergency_On) {
+      digitalWrite(ledPin, HIGH);
+      delay(250);
+      digitalWrite(ledPin, LOW);
+      delay(250);
+      switchstate = digitalRead(Switch_pin);
+      if (switchstate == 0) {
+        emergency_On = false;
+      }
+    }
+  }
+  ledPin = 0;
 }
 
 void read_Values () {
-  delay(1000);
   Photo_value = analogRead(Photo_sensor);
   Temp_value = analogRead(Temp_sensor);
   switchstate = digitalRead(Switch_pin);
