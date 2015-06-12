@@ -3,10 +3,10 @@ const int GLed = 9;  //Green led
 const int Temp_sensor = A1;  //Temperature sensor
 const int Photo_sensor = A0;  //Photoresistor sensor
 const int Switch_pin = 12;  //Switch
-const int Piezo_pin = 7;
+const int Piezo_pin = 6;
 
 //Base Values
-  const float base_Temp = 20.0;
+  const float base_Temp = 19.5;
   const int base_Photo = 700;
   
   int count = 10;  //Count for delays
@@ -66,22 +66,23 @@ void loop () {
 //Configure to override casual with emergencies
 void blink() {
   //casual
-  //blinks 30 times within 15 seconds --- Mostly used for casual events, emergency event may last indefintely, additional BOOL to confirm if casual or emergency
+  //blinks 18 times within 15 seconds --- Mostly used for casual events, emergency event may last indefintely, additional BOOL to confirm if casual or emergency
   if (ledPin == GLed) {
     int blinker = 0;
-    while(blinker <= 30) {
+    while(blinker <= 18) {
+      tone(Piezo_pin, 250, 500);//tone(pin, pitch, duration(ms))
       read_Values();
       if (temp > base_Temp) {
         ledPin = RLed;
-        blinker = 30;
+        blinker = 18;
       }
       digitalWrite(ledPin, HIGH);
-      delay(250);
+      delay(400);
       digitalWrite(ledPin, LOW);
-      delay(250);
+      delay(400);
       switchstate = digitalRead(Switch_pin);
       if (switchstate == 0) {
-        blinker = 30;
+        blinker = 18;
       }
       blinker++;
     }
@@ -90,10 +91,12 @@ void blink() {
   if (ledPin == RLed) {
     bool emergency_On = true;
     while (emergency_On) {
+      read_Values();
+      tone(Piezo_pin, 500, 500);
       digitalWrite(ledPin, HIGH);
-      delay(250);
+      delay(400);
       digitalWrite(ledPin, LOW);
-      delay(250);
+      delay(400);
       switchstate = digitalRead(Switch_pin);
       if (switchstate == 0) {
         emergency_On = false;
@@ -122,7 +125,9 @@ void read_Values () {
   Serial.println();
 }
 
-void sound () {
-  tone(Piezo_pin, 250, 1000);//tone(pin, pitch, duration(ms))
-  delay(1000);
-}
+/*void sound () {
+  if(blinker < 18) { 
+    tone(Piezo_pin, 250, 1000);//tone(pin, pitch, duration(ms))
+    delay(1000);
+  }
+}*/
