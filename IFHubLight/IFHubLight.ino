@@ -1,25 +1,28 @@
-const int RLed = 8;  //Red led
-const int GLed = 9;  //Green led
-const int Temp_sensor = A1;  //Temperature sensor
-const int Photo_sensor = A0;  //Photoresistor sensor
+const int RLed = 9;  //Red led 
+const int BLed = 10; //Blue led
+const int GLed = 11;  //Green led
+//const int BLed =
+const int Temp_sensor = A1;  //Temperature sensor adjusted
+const int Photo_sensor = A0;  //Photoresistor sensor  adjusted
 const int Switch_pin = 12;  //Switch
 const int Piezo_pin = 6;
-
+ 
 //Base Values
-  const float base_Temp = 19.5;
-  const int base_Photo = 700;
+const float base_Temp = 19.5;
+const int base_Photo = 700;
   
-  int count = 10;  //Count for delays
-  int switchstate = 0;  //Button state
-  int Photo_value = 0;
-  int Temp_value = 0;
-  int ledPin = 0;  //Contains the active pin
-  float volts = 0;  //Sensors read as volts
-  float temp = 0;   //Convert volts to temperature
+int count = 10;  //Count for delays
+int switchstate = 0;  //Button state
+int Photo_value = 0;
+int Temp_value = 0;
+int ledPin = 0;  //Contains the active pin
+float volts = 0;  //Sensors read as volts
+float temp = 0;   //Convert volts to temperature
 
 void setup() {
   pinMode(RLed, OUTPUT);
   pinMode(GLed, OUTPUT);
+  pinMode(BLed, OUTPUT);
   pinMode(Switch_pin, INPUT);
   Serial.begin(9600);
 }
