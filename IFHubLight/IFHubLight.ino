@@ -5,10 +5,10 @@ const int GLed = 11;  //Green led
 const int Temp_sensor = A1;  //Temperature sensor adjusted
 const int Photo_sensor = A0;  //Photoresistor sensor  adjusted
 const int Switch_pin = 12;  //Switch
-const int Piezo_pin = 6;
+const int Piezo_pin = 8;
  
 //Base Values
-const float base_Temp = 19.5;
+const float base_Temp = 21.5;
 const int base_Photo = 700;
   
 int count = 10;  //Count for delays
