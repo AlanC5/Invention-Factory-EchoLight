@@ -15,6 +15,8 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
+  Serial1.print("hey");
+  Serial.print("no");
   if (Serial1.available()) {
     char getData = Serial1.read();
     if (getData == 'B') {
