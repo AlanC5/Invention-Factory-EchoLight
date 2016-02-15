@@ -9,5 +9,8 @@ In the summer of 2015, we invented EchoLight, a set of devices that detects and 
 
 http://inventionfactory.org/inventions/echo-light
 
-The two main components to our prototype are the Arduino Mega 2560 and Easy VR 3, a sound processing chip. 
+The three main components to our prototype are the Arduino Mega 2560, XBee Series 1, and Easy VR 3 (sound processing chip). 
+
+By the sixth week, we had two devices that were able to communicate with each other and reproduce sound.
+
 
