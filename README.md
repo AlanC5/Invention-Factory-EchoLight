@@ -13,4 +13,10 @@ The three main components to our prototype are the Arduino Mega 2560, XBee Serie
 
 By the sixth week, we had two devices that were able to communicate with each other and reproduce sound.
 
+![Prototype](Images/EchoLight.jpg)
 
+
+We created a website to allow judges to test various sounds with our devices. Judges would simply click on an icon representing the sound and the computer would play the MP3 file. Then our devices, which were not conneted to our computers would detect the sound and reproduce it.
+
+
+![Landing Page](Images/Landing Page.png)
