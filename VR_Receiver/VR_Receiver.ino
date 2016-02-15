@@ -50,11 +50,17 @@ const int GreenLED = 7;
 const int RedLED =  6;
 const int BlueLED = 5;
 
+//Walkie Talkie
+const int TransistorPin = 10;
+
 void setup()
 {
   pinMode(GreenLED, OUTPUT);
   pinMode(RedLED, OUTPUT);
   pinMode(BlueLED, OUTPUT);
+  pinMode(TransistorPin, OUTPUT);
+
+  digitalWrite(TransistorPin, HIGH);
   // setup PC serial port
   pcSerial.begin(9600);
 
@@ -129,23 +135,28 @@ void loop()
         digitalWrite(RedLED, HIGH);
         digitalWrite(GreenLED, HIGH);
         digitalWrite(BlueLED, HIGH);
+        digitalWrite(TransistorPin, HIGH);
         getData = ' ';
       }
       // leave intercom mode and turn off lights
       if (getData == 'C') {
         Reset();
+        digitalWrite(TransistorPin, HIGH);
         getData = ' ';
       }
       // Tea Kettle Whistle
       if (getData == 'X') {
         Reset();
+        easyvr.stop();
         digitalWrite(GreenLED, HIGH);
         easyvr.playSound(3, EasyVR::VOL_FULL);
+        
         getData = ' ';
       }
       // Doorbell Ring
       if (getData == 'Y') {
         Reset();
+        easyvr.stop();
         digitalWrite(BlueLED, HIGH);
         easyvr.playSound(1, EasyVR::VOL_FULL);
         getData = ' ';
@@ -153,6 +164,7 @@ void loop()
       // Phone Ringtone
       if (getData == 'Z') {
         Reset();
+        easyvr.stop();
         analogWrite(RedLED, 255);
         digitalWrite(BlueLED, HIGH);
         easyvr.playSound(2, EasyVR::VOL_FULL);
@@ -243,6 +255,7 @@ void action()
         break;
       case G1_ECHO_LIGHTS_OUT:
         Reset();
+        digitalWrite(TransistorPin, LOW);
         break;
       case G1_SOUND_1:
         //Tea Kettle Whistle
@@ -271,6 +284,7 @@ void action()
       case G2_ECHO_OVER:
         //Close off intercom mode
         Reset();
+        digitalWrite(TransistorPin, LOW);
         group = 1;
         break;
       }

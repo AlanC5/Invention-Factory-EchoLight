@@ -1,0 +1,61 @@
+<!DOCTYPE html> 
+<html> 
+<head>
+	<title>EchoLight</title>
+	<link rel="stylesheet" type="text/css" href="css/EchoLight.css">
+</head>
+<body> 
+
+<div id="header">
+	<div id="header_content">
+		<p id="invention_name">EchoLight</p>
+		<p id="inventors">Inventors: Alan Chen and Tony Zhao</p>
+		<p id="instructions">Press one of the buttons below to play a sound.</p>
+	</div>
+</div>
+
+
+<div id="bottom">
+	<!--IMAGES-->
+	<div id="bottom_content">
+		<img src="Images/Kettle_Image.png" onclick="playKettle()" class="pic">
+
+		<img src="Images/Doorbell_Image.png" onclick="playDoorBell()" class="pic">
+
+		<img src="Images/Phone_Image.png" onclick="playPhone()" class="pic">
+
+
+		<!--SOUNDS-->
+		<audio controls id="Tea_Kettle_Sound" style="display:none;">
+		  <source src="Sounds/Tea Kettle.mp3" type="audio/mpeg">
+		</audio>
+
+		<audio controls id="Door_bell_Sound" style="display:none;">
+		  <source src="Sounds/Door_Bell.mp3" type="audio/mpeg">
+		</audio>
+
+		<audio controls id="Phone_Sound" style="display:none;">
+		  <source src="Sounds/Ringtone.mp3" type="audio/mpeg">
+		</audio>
+	</div>
+</div>
+
+
+<script> 
+function playKettle() { 
+    Tea_Kettle_Sound.play(); 
+} 
+
+function playDoorBell() { 
+    Door_bell_Sound.play(); 
+} 
+
+function playPhone() { 
+    Phone_Sound.play(); 
+} 
+
+</script> 
+
+
+</body> 
+</html>

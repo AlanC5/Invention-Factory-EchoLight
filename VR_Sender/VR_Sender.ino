@@ -50,11 +50,17 @@ const int GreenLED = 7;
 const int RedLED =  6;
 const int BlueLED = 5;
 
+//Walkie Talkie
+const int TransistorPin = 10;
+
 void setup()
 {
   pinMode(GreenLED, OUTPUT);
   pinMode(RedLED, OUTPUT);
   pinMode(BlueLED, OUTPUT);
+  pinMode(TransistorPin, OUTPUT);
+  //HIGH turns off 
+  digitalWrite(TransistorPin, HIGH);
   // setup PC serial port
   pcSerial.begin(9600);
 
@@ -112,7 +118,6 @@ void action();
 void loop()
 {
   easyvr.setPinOutput(EasyVR::IO1, HIGH); // LED on (listening)
-
   Serial.print("Say a command in Group ");
   Serial.println(group);
   easyvr.recognizeCommand(group);
@@ -120,7 +125,7 @@ void loop()
   do
   {
     // can do some processing while waiting for a spoken command
-
+    
   }
   while (!easyvr.hasFinished());
   
@@ -182,7 +187,8 @@ void action()
         digitalWrite(BlueLED, HIGH);
         // Send 'A' character and turn on walkie talkie
         // Other Arduino well doesn't need to do anything
-         Serial1.print('A');
+        digitalWrite(TransistorPin, LOW);
+        Serial1.print('A');
         group = 2;
         break;
       case G1_ECHO_1:
@@ -207,6 +213,7 @@ void action()
       case G1_ECHO_LIGHTS_OUT:
         Reset();
         // "C" to close off walkie and turn off lights
+        digitalWrite(TransistorPin, HIGH);
         Serial1.print('C');
         break;
       case G1_SOUND_1:
@@ -241,6 +248,7 @@ void action()
         Reset();
         group = 1;
         // "C" to close off walkie and turn off lights
+        digitalWrite(TransistorPin, HIGH);
         Serial1.print('C');
         break;
       }
